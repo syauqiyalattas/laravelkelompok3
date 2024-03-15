@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="p-3">
-    <a href="{{route('anggota.create')}}" class="btn btn-primary my-3">Tambah Data Anggota</a>
+    <a href="{{ route('anggota.create') }}" class="btn btn-primary my-3">Tambah Data Anggota</a>
     <table id="example1" class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -19,7 +19,7 @@
         <tbody>
             @foreach($anggotas as $anggota)
             <tr>
-            <th scope="row">{{$anggota->id}}</th>
+                <th scope="row">{{ $anggota->NIK_Anggota }}</th>
                 <td>{{ $anggota->nama }}</td>
                 <td>{{ $anggota->nomor_identifikasi }}</td>
                 <td>{{ $anggota->alamat }}</td>
@@ -27,13 +27,13 @@
                 <td>{{ $anggota->tanggal_bergabung }}</td>
                 <td>{{ $anggota->status_keanggotaan }}</td>
                 <td nowrap>
-                    <a href="{{route('anggota.edit' , $anggota->id )}}"class="btn btn-sm btn-warning">edit</a>
-                    <form action="{{route('anggota.destroy' , $anggota->id )}}" method="POST" class="d-inline">
-                    @csrf
-                    @method('delete')
-                    <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
+                    <a href="{{ route('anggota.edit', $anggota->NIK_Anggota) }}" class="btn btn-sm btn-warning">Edit</a>
+                    <form action="{{ route('anggota.destroy', $anggota->NIK_Anggota) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('delete')
+                        <button type="submit" class="btn btn-sm btn-danger">Hapus</button>
                     </form>
-                    <a href="{{route('anggota.show' , $anggota->id )}}" class = " btn btn-sm btn-info">Show</a>
+                    <a href="{{ route('anggota.show', $anggota->NIK_Anggota) }}" class="btn btn-sm btn-info">Show</a>
                 </td>
             </tr>
             @endforeach

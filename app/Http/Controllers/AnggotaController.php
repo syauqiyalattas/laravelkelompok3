@@ -6,7 +6,8 @@ use App\Http\Requests\StoreAnggota;
 use App\Http\Requests\StoreAnggotaRequest;
 use App\Models\Anggota;
 use Illuminate\Http\Request;
-use RealRashid\SweetAlert\Facades\Alert As SweetAlert;
+use Illuminate\Support\Facades\Log;
+use RealRashid\SweetAlert\Facades\Alert as SweetAlert;
 
 class AnggotaController extends Controller
 {
@@ -31,50 +32,71 @@ class AnggotaController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-   public function store(StoreAnggotaRequest $request)
-{
-    try {
-        $data = $request->validated();
+    public function store(Request $request)
+    {
 
-        Anggota::create($data);
-        SweetAlert::success('Success', 'Anggota created successfully');
+        $validatedData = $request->validate([
+            'nama' => 'required',
+            'nomor_identifikasi' => 'required',
+            'alamat' => 'required',
+            'nomor_telepon' => 'required',
+            'tanggal_bergabung' => 'required|date',
+            'status_keanggotaan' => 'required|string|in:Aktif,Tidak Aktif',
+        ]);
 
-    } catch (\Exception $e) {
-        SweetAlert::error('Error', 'Error creating anggota');
+
+        Anggota::create($validatedData);
+
+        SweetAlert::success('success', 'Anggota created successfully');
+        return redirect()->route('anggota.index');
     }
-
-    return redirect()->route('anggota.index');
-}
 
     /**
      * Display the specified resource.
      */
-    public function show(Anggota $anggota)
+    public function show(string $id)
     {
-        //
+
+        $anggota = Anggota::find($id);
+        if (!$anggota) {
+            return redirect()->route('anggota.index')->with('error', 'Anggota not found');
+        }
+
+        // Pass the specific Anggota record to the view
+        return view('pages.anggota.detail', compact('anggota'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Anggota $anggota)
+    public function edit(string $id)
     {
-        //
+        $anggota = Anggota::find($id);
+        return view('pages.anggota.edit', compact('anggota'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Anggota $anggota)
+    public function update(Request $request, string $id)
     {
-        //
+        $anggota = Anggota::find($id);
+        $data = $request->all();
+
+        $anggota->update($data);
+        SweetAlert::success('success', 'Anggota updated successfully');
+        return redirect()->route('anggota.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Anggota $anggota)
+    public function destroy(string $id)
     {
-        //
+        $anggota = Anggota::find($id);
+        $anggota->delete();
+        SweetAlert::success('success', 'Anggota deleted successfully');
+        return redirect()->route('anggota.index');
     }
 }

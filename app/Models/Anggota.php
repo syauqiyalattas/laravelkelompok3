@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Anggota extends Model
 {
     use HasFactory;
-
-
+    public $timestamps = false;
     protected $fillable = ['nama', 'nomor_identifikasi', 'alamat', 'nomor_telepon', 'tanggal_bergabung', 'status_keanggotaan'];
 }
