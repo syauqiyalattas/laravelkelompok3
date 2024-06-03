@@ -42,4 +42,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+// variabel namanya is admin untuk menyimpan fungsi kolom role yg record / isi nya admin 
+    public function isAdmin(){
+        return $this -> role === "admin" ;
+    }
 }
